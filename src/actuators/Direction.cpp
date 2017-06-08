@@ -1,4 +1,5 @@
 #include <Servo.h>
+#include "Trajectory.cpp"
 
 class Direction {
 private:
@@ -21,7 +22,7 @@ private:
 
 public:
 
-  Direction(int p, int l, int r){
+  Direction(int p, int l, int r, Trajectory trajectory){
     pin = p;
     left_max = l;
     right_max = r;

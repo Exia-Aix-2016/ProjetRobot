@@ -6,50 +6,41 @@ enum Sens {
 };
 
 
-class Propultion {
+class Propulsion {
 private:
 
   int speed;
   Sens sens;
 
-  int pin_f1;
-  int pin_f2;
-  int pin_b1;
-  int pin_b2;
+  int pin_transistor;
   int pin_relay;
 
   void applySens(){
     switch (sens) {
       case FORWARD:
-        digitalWrite(pin_f1, HIGH);
-        digitalWrite(pin_f2, HIGH);
-        digitalWrite(pin_b1, LOW);
-        digitalWrite(pin_b1, LOW);
+        digitalWrite(pin_relay, LOW);
         break;
       case BACKWARD:
-        digitalWrite(pin_f1, LOW);
-        digitalWrite(pin_f2, LOW);
-        digitalWrite(pin_b1, HIGH);
-        digitalWrite(pin_b1, HIGH);
+        digitalWrite(pin_relay, HIGH);
         break;
     }
   }
 
   void applySpeed(void){
-    analogWrite(pin_relay, speed);
+    analogWrite(pin_transistor, speed);
   }
 
 public:
 
-  Propultion (int f1, int f2, int b1, int b2, int r){
+  Propulsion (int t, int r){
     speed = 0;
     sens = Sens::FORWARD;
 
-    pin_f1 = f1;
-    pin_f2 = f2;
-    pin_b1 = b1;
-    pin_b2 = b2;
+    pin_transistor = t;
     pin_relay = r;
+
+    pinMode(pin_transistor, OUTPUT);
+    pinMode(pin_relay, OUTPUT);
   }
 
   void forward(void){

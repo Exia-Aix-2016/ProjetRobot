@@ -1,21 +1,36 @@
 #include "Arduino.h"
 
-#include "Direction.cpp"
+#include "actuators/Direction.cpp"
+#include "actuators/Propulsion.cpp"
 
 const int SERVO_PIN = 3;
 const int SERVO_LMAX =  0;
 const int SERVO_RMAX = 90;
 
+const int TRANSISTOR_PIN = 3;
+const int RELAY_PIN = 4;
+
+//Trajectory trajectory;
 Direction* direction;
+Propulsion* propulsion;
+
 
 void setup() {
-  direction = new Direction(SERVO_PIN, SERVO_LMAX, SERVO_RMAX);
-  Serial.begin(9600);
+  //direction = new Direction(SERVO_PIN, SERVO_LMAX, SERVO_RMAX, trajectory);
+  propulsion = new Propulsion(TRANSISTOR_PIN, RELAY_PIN);
+  propulsion->setSpeed(50);
 }
 
 void loop() {
-  direction->center();
-  Serial.println(direction->getValue());
+  propulsion->setSpeed(50);
+  propulsion->backward();
+  delay(5000);
+  propulsion->forward();
+  propulsion->setSpeed(100);
+  delay(5000);
+
+  //direction->center();
+  //Serial.println(direction->getValue());
   /*delay(1000);
   direction->right();
   delay(1000);
