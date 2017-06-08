@@ -9,52 +9,60 @@ enum Sens {
 class Propulsion {
 private:
 
-  int speed;
   Sens sens;
+  bool state;
 
-  int pin_transistor;
-  int pin_relay;
+  int pin_state;
+  int pin_sens;
 
-  void applySens(){
+  void apply(){
     switch (sens) {
       case FORWARD:
-        digitalWrite(pin_relay, LOW);
+        digitalWrite(pin_sens, HIGH);
         break;
       case BACKWARD:
-        digitalWrite(pin_relay, HIGH);
+        digitalWrite(pin_sens, LOW);
         break;
     }
-  }
 
-  void applySpeed(void){
-    analogWrite(pin_transistor, speed);
+    switch (state) {
+      case true:
+        digitalWrite(pin_state, HIGH);
+        break;
+      case false:
+        digitalWrite(pin_state, LOW);
+        break;
+    }
+
   }
 
 public:
 
-  Propulsion (int t, int r){
-    speed = 0;
+  Propulsion (int r1, int r2){
+    state = false;
     sens = Sens::FORWARD;
 
-    pin_transistor = t;
-    pin_relay = r;
+    pin_sens = r1;
+    pin_state = r2;
 
-    pinMode(pin_transistor, OUTPUT);
-    pinMode(pin_relay, OUTPUT);
+    pinMode(pin_state, OUTPUT);
+    pinMode(pin_sens, OUTPUT);
   }
 
   void forward(void){
     sens = Sens::FORWARD;
-    applySens();
+    state = true;
+    apply();
   }
 
   void backward(void){
     sens = Sens::BACKWARD;
-    applySens();
+    state = true;
+    apply();
   }
 
-  void setSpeed(int s){
-    speed = map(s, 0, 100, 0, 255);
-    applySpeed();
+  void stop(void){
+    state = false;
+    apply();
   }
 };
