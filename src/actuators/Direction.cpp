@@ -22,7 +22,7 @@ private:
 
 public:
 
-  Direction(int p, int l, int r, Trajectory trajectory){
+  Direction(int p, int l, int r /*,Trajectory trajectory*/){
     pin = p;
     left_max = l;
     right_max = r;
